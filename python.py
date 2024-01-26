@@ -5,7 +5,8 @@ pygame.init()
 screen = pygame.display.set_mode((600, 500))
 
 pygame.mixer.init()
-sound = pygame.mixer.Sound("./sounds/CantinaBand3.wav")
+sound = pygame.mixer.Sound("./sounds/main_laugh_1.wav")
+test_sound = pygame.mixer.Sound("./sounds/CantinaBand3.wav")
 
 
 bg = pygame.image.load("./images/map.jpg")
