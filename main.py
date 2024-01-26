@@ -3,14 +3,14 @@ import math
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((1920, 1080))
 clock = pygame.time.Clock()
 running = True
 dt = 0
 
 scroll = [screen.get_width()/2, screen.get_height()/2]
 
-bg = pygame.image.load("mountains-190055_1920.jpg").convert()
+bg = pygame.image.load("./images/land_shallow_topo_8192.tif").convert()
 
 while running:
     # poll for events
@@ -27,13 +27,13 @@ while running:
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
-        scroll[1] -= 300 * dt
+        scroll[1] += 600 * dt
     if keys[pygame.K_s]:
-        scroll[1] += 300 * dt
+        scroll[1] -= 600 * dt
     if keys[pygame.K_a]:
-        scroll[0] -= 300 * dt
+        scroll[0] += 600 * dt
     if keys[pygame.K_d]:
-        scroll[0] += 300 * dt
+        scroll[0] -= 600 * dt
 
     # flip() the display to put your work on screen
     pygame.display.flip()
