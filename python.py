@@ -1,17 +1,14 @@
 import pygame
 
-
-class Background(pygame.sprite.Sprite):
-    def __init__(self, image_file):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(image_file)
-
-
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((600, 500))
 
-bg = Background("./images/map.jpg")
+pygame.mixer.init()
+sound = pygame.mixer.Sound("./sounds/CantinaBand3.wav")
+
+
+bg = pygame.image.load("./images/map.jpg")
 
 clock = pygame.time.Clock()
 running = True
@@ -23,7 +20,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.blit(bg.image, (0,0))
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_ESCAPE]:
+        pygame.mixer.Sound.play(sound)
+
+    screen.blit(bg, (0, 0))
 
     pygame.display.flip()
     clock.tick(40)
