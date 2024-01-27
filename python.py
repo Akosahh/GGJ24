@@ -1,18 +1,15 @@
 import pygame
-from PIL import Image
-
-
-class Background(pygame.sprite.Sprite):
-    def __init__(self, image_file):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(image_file)
-
 
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((600, 500))
 
-bg = Background("./images/map.jpg")
+pygame.mixer.init()
+sound = pygame.mixer.Sound("./sounds/main_laugh_1.wav")
+test_sound = pygame.mixer.Sound("./sounds/CantinaBand3.wav")
+
+bg = pygame.image.load("./images/map.jpg")
+
 player = pygame.image.load("./images/laughing.png")
 player = pygame.transform.scale(player, (30, 30))
 
@@ -28,7 +25,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.blit(bg.image, (0, 0))
+    screen.blit(bg, (0, 0))
     # pygame.draw.circle(screen, player, player_position, 10)
     screen.blit(player, player_position)
     keys = pygame.key.get_pressed()
@@ -40,6 +37,8 @@ while running:
         player_position.x -= 300 * dt
     if keys[pygame.K_d]:
         player_position.x += 300 * dt
+    if keys[pygame.K_ESCAPE]:
+        pygame.mixer.Sound.play(sound)
 
     pygame.display.update()
     dt = clock.tick(40) / 10000
