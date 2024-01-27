@@ -15,7 +15,6 @@ class City:
         self.citizen_image = pygame.image.load("./assets/images/bored_emoji.png")
         self.citizen_image = pygame.transform.scale(self.citizen_image, (self.people_size, self.people_size))
         self.colour = "white"
-        # self.population = 35
         self.x_y_list = []
 
     def render(self):

@@ -28,6 +28,12 @@ class Game:
         self.get_key_presses()
         self.check_player_movement()
 
+        self.player.collision_with_npc_check(
+            npc_position_list=self.city.x_y_list,
+            npc_size=self.city.people_size,
+            player_pos=[self.background_x_offset, self.background_y_offset]
+        )
+
         self.screen.fill("black")
 
         for i in range(3):
@@ -41,6 +47,7 @@ class Game:
     def render_entities(self):
         self.player.render()
         self.city.render()
+
 
 
 
