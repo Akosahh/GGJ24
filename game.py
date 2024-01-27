@@ -1,10 +1,7 @@
 import pygame
 
 from entities import Player
-<<<<<<< HEAD
 from npccity import City
-=======
->>>>>>> 2cb0f495c248ad44332cbdfefb71ae82200d15f8
 from port import PortFactory, Vehicle
 
 
@@ -82,10 +79,7 @@ class Game:
         pygame.display.flip()
 
     def render_entities(self):
-<<<<<<< HEAD
         self.city.render()
-=======
->>>>>>> 2cb0f495c248ad44332cbdfefb71ae82200d15f8
         self.port_factory.render()
         self.plane.render()
 
@@ -114,12 +108,6 @@ class Game:
         self.check_horizontal(frame_speed)
 
         self.background_x_offset %= 8192
-<<<<<<< HEAD
-=======
-
-        self.background_x_offset = int(self.background_x_offset)
-        self.background_y_offset = int(self.background_y_offset)
->>>>>>> 2cb0f495c248ad44332cbdfefb71ae82200d15f8
 
     def check_up(self, frame_speed):
         if self.keys[pygame.K_w]:
