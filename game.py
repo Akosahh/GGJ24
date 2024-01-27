@@ -15,8 +15,8 @@ class Game:
 
         self.player = Player(self.screen, "./assets/images/laughing.png", 30, 100)
         self.city = City(self.background)
-        self.city.create_population(50)
-        self.city.create_population(100)
+        self.city.create_population(radius_range=90, population=20)
+        self.city.create_population(radius_range=140, population=30)
 
         self.background_x_offset = 0
         self.background_y_offset = 0
