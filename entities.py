@@ -14,7 +14,7 @@ class Player:
         self.screen.blit(self.image, (self.get_x(), self.get_y()))
 
     def get_x(self):
-        return int(self.screen.get_width() / 2)
+        return self.screen.get_width() / 2
     
     def get_y(self):
-        return int(self.screen.get_height() / 2) + self.vertical_offset
+        return (self.screen.get_height() / 2) + self.vertical_offset
