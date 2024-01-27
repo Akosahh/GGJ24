@@ -1,5 +1,6 @@
 import pygame
 from entities import Player
+from npccity import City
 
 class Game:
 
@@ -13,6 +14,9 @@ class Game:
         self.background = pygame.image.load(background_asset).convert()
 
         self.player = Player(self.screen, "./assets/images/laughing.png", 30, 100)
+        self.city = City(self.background)
+        self.city.create_population(50)
+        self.city.create_population(100)
 
         self.background_x_offset = 0
         self.background_y_offset = 0
@@ -36,6 +40,9 @@ class Game:
 
     def render_entities(self):
         self.player.render()
+        self.city.render()
+
+
 
     def render_ui(self):
         position_info = self.font.render(f"Scroll: [{self.background_x_offset}, {self.background_y_offset}]", True, (255, 0, 0))

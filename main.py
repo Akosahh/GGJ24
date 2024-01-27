@@ -1,5 +1,6 @@
 import pygame
 from game import Game
+from npccity import City
 
 game = Game("didot.ttc", 72, "./assets/images/land_shallow_topo_8192.tif")
 
@@ -8,6 +9,7 @@ running = True
 while running:
 
     game.update()
+
 
     # -------- Logic --------
     # poll for events
