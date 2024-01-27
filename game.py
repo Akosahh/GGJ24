@@ -52,9 +52,6 @@ class Game:
         self.check_horizontal(frame_speed)
 
         self.background_x_offset %= 8192
-        
-        self.background_x_offset = int(self.background_x_offset)
-        self.background_y_offset = int(self.background_y_offset)
 
     def check_up(self, frame_speed):
         if self.keys[pygame.K_w]:
@@ -66,25 +63,25 @@ class Game:
                 self.background_y_offset -= frame_speed
             else:
                 self.background_y_offset = 0
-                if self.player.vertical_offset > -int(self.screen.get_height() / 2):
+                if self.player.vertical_offset > -self.screen.get_height() / 2:
                     self.player.vertical_offset -= frame_speed
                 else:
-                    self.player.vertical_offset = -int(self.screen.get_height() / 2)
+                    self.player.vertical_offset = -self.screen.get_height() / 2
 
     def check_down(self, frame_speed):
         if self.keys[pygame.K_s]:
             if self.check_position_is_sea(self.player.get_x(), self.player.get_y() + frame_speed + 30):
                 return
             if self.player.vertical_offset < 0:
-                self.player.vertical_offset += self.player.speed * self.dt
+                self.player.vertical_offset += frame_speed
             elif self.background_y_offset < (4096 - self.screen.get_height()):
                 self.background_y_offset += frame_speed
             else:
                 self.background_y_offset = (4096 - self.screen.get_height())
-                if self.player.vertical_offset < int(self.screen.get_height() / 2):
+                if self.player.vertical_offset < self.screen.get_height() / 2:
                     self.player.vertical_offset += frame_speed
                 else:
-                    self.player.vertical_offset = int(self.screen.get_height() / 2)
+                    self.player.vertical_offset = self.screen.get_height() / 2
 
     def check_horizontal(self, frame_speed):
         if self.keys[pygame.K_a]:
