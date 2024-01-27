@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Istanbul Airport",
+    "continent": "Europe",
+    "position": [4753, 1111],
+    "scale": 30
+  },
+  {
+    "name": "Hartsfield–Jackson Atlanta International Airport",
+    "continent": "North America",
+    "position": [2181, 1286],
+    "scale": 70
+  },
+  {
+    "name": "Vancouver International Airport",
+    "continent": "North America",
+    "position": [1243, 879],
+    "scale": 70
+  }
+]
