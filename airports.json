@@ -1,20 +1,130 @@
 [
   {
-    "name": "Istanbul Airport",
-    "continent": "Europe",
-    "position": [4753, 1111],
-    "scale": 30
-  },
-  {
-    "name": "Hartsfield–Jackson Atlanta International Airport",
-    "continent": "North America",
-    "position": [2181, 1286],
+    "position": [574, 548],
     "scale": 70
   },
   {
-    "name": "Vancouver International Airport",
-    "continent": "North America",
-    "position": [1243, 879],
+    "position": [1353, 973],
+    "scale": 70
+  },
+  {
+    "position": [2281, 1237],
+    "scale": 70
+  },
+  {
+    "position": [1845, 1625],
+    "scale": 70
+  },
+  {
+    "position": [2598, 1855],
+    "scale": 70
+  },
+  {
+    "position": [2442, 2211],
+    "scale": 70
+  },
+  {
+    "position": [3200, 2197],
+    "scale": 70
+  },
+  {
+    "position": [2492, 3127],
+    "scale": 70
+  },
+  {
+    "position": [3068, 585],
+    "scale": 70
+  },
+  {
+    "position": [4094, 859],
+    "scale": 70
+  },
+  {
+    "position": [4292, 647],
+    "scale": 70
+  },
+  {
+    "position": [4430, 915],
+    "scale": 70
+  },
+  {
+    "position": [4026, 1175],
+    "scale": 70
+  },
+  {
+    "position": [4886, 757],
+    "scale": 70
+  },
+  {
+    "position": [5342, 1055],
+    "scale": 70
+  },
+  {
+    "position": [5004, 1311],
+    "scale": 70
+  },
+  {
+    "position": [5336, 1553],
+    "scale": 70
+  },
+  {
+    "position": [4750, 1401],
+    "scale": 70
+  },
+  {
+    "position": [4028, 1821],
+    "scale": 70
+  },
+  {
+    "position": [4636, 2604],
+    "scale": 70
+  },
+  {
+    "position": [5132, 2590],
+    "scale": 70
+  },
+  {
+    "position": [5862, 1642],
+    "scale": 70
+  },
+  {
+    "position": [5616, 587],
+    "scale": 70
+  },
+  {
+    "position": [6355, 1061],
+    "scale": 70
+  },
+  {
+    "position": [6871, 485],
+    "scale": 70
+  },
+  {
+    "position": [7875, 557],
+    "scale": 70
+  },
+  {
+    "position": [6463, 1674],
+    "scale": 70
+  },
+  {
+    "position": [6703, 2044],
+    "scale": 70
+  },
+  {
+    "position": [7341, 2182],
+    "scale": 70
+  },
+  {
+    "position": [6801, 2742],
+    "scale": 70
+  },
+  {
+    "position": [7521, 2726],
+    "scale": 70
+  },
+  {
+    "position": [7951, 3078],
     "scale": 70
   }
 ]

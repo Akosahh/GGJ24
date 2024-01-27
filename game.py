@@ -1,8 +1,9 @@
+import random
 import pygame
 
 from entities import Player
 from npccity import City
-from port import PortFactory, Vehicle
+from port import PortFactory, VehicleFactory, Vehicle
 
 
 class Game:
@@ -26,23 +27,12 @@ class Game:
         self.port_factory = PortFactory(
             self.midground, "./assets/images/airport.svg", "./airports.json"
         )
-        self.plane = Vehicle(
+        self.plane_factory = VehicleFactory(
             self.midground,
             "./assets/images/airplane.png",
             30,
-            self.port_factory.ports[1].position,
-            self.port_factory.ports[2].position,
-        )
-
-        self.port_factory = PortFactory(
-            self.midground, "./assets/images/airport.svg", "./airports.json"
-        )
-        self.plane = Vehicle(
-            self.midground,
-            "./assets/images/airplane.png",
-            30,
-            self.port_factory.ports[1].position,
-            self.port_factory.ports[2].position,
+            10,
+            self.port_factory.ports,
         )
 
         self.background_x_offset = 0
@@ -54,9 +44,7 @@ class Game:
         self.get_key_presses()
         self.check_exit()
         self.check_player_movement()
-
-        if self.plane.complete < 1:
-            self.plane.calculate_position()
+        self.plane_logic()
 
         self.screen.fill("black")
         self.midground.fill(pygame.Color(0, 0, 0, 0))
@@ -81,7 +69,7 @@ class Game:
     def render_entities(self):
         self.city.render()
         self.port_factory.render()
-        self.plane.render()
+        self.plane_factory.render()
 
     def render_ui(self):
         position_info = self.font.render(
@@ -89,13 +77,7 @@ class Game:
             True,
             (255, 0, 0),
         )
-        plane_info = self.font.render(
-            f"Plane: [{self.plane.position[0]}, {self.plane.position[1]}]",
-            True,
-            (255, 0, 0),
-        )
         self.screen.blit(position_info, (20, 20))
-        self.screen.blit(plane_info, (20, 80))
 
     def get_key_presses(self):
         self.keys = pygame.key.get_pressed()
@@ -137,7 +119,7 @@ class Game:
             elif self.background_y_offset < (4096 - self.screen.get_height()):
                 self.background_y_offset += frame_speed
             else:
-                self.background_y_offset = (4096 - self.screen.get_height())
+                self.background_y_offset = 4096 - self.screen.get_height()
                 if self.player.vertical_offset < self.screen.get_height() / 2:
                     self.player.vertical_offset += frame_speed
                 else:
@@ -163,3 +145,16 @@ class Game:
     def check_exit(self):
         if self.keys[pygame.K_ESCAPE]:
             pygame.event.post(pygame.event.Event(pygame.QUIT))
+
+    def plane_logic(self):
+        for i, plane in enumerate(self.plane_factory.vehicles):
+            if plane.complete < 1:
+                plane.calculate_position()
+            else:
+                self.plane_factory.vehicles[i] = Vehicle(
+                    self.plane_factory.background,
+                    self.plane_factory.image_asset,
+                    self.plane_factory.scale,
+                    random.choice(self.plane_factory.ports).position,
+                    random.choice(self.plane_factory.ports).position,
+                )
