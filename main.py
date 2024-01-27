@@ -24,18 +24,9 @@ while running:
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("black")
 
-    # RENDER YOUR GAME HERE
-    screen.blit(bg, ((-scroll[0], -scroll[1])))
-    screen.blit(bg, ((-scroll[0] + 8192, -scroll[1])))
-    screen.blit(bg, ((-scroll[0] + 8192 * 2, -scroll[1])))
-
-    screen.blit(bg, ((-scroll[0], -scroll[1] + 4096)))
-    screen.blit(bg, ((-scroll[0] + 8192, -scroll[1] + 4096)))
-    screen.blit(bg, ((-scroll[0] + 8192 * 2, -scroll[1] + 4096)))
-
-    screen.blit(bg, ((-scroll[0], -scroll[1] + 4096 * 2)))
-    screen.blit(bg, ((-scroll[0] + 8192, -scroll[1] + 4096 * 2)))
-    screen.blit(bg, ((-scroll[0] + 8192 * 2, -scroll[1] + 4096 * 2)))
+    for i in range(3):
+        for j in range(3):
+            screen.blit(bg, ((-scroll[0] + 8192 * i, -scroll[1] + 4096 * j)))
 
     img = font.render(f"Scroll: [{scroll[0]}, {scroll[1]}]", True, (255, 0, 0))
     screen.blit(img, (20, 20))
