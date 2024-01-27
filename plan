@@ -1,0 +1,28 @@
+GAMEPLAY LOOP
+
+infect cities and people with laughter
+aim to infect 100% of world population
+travel around using planes and ferries
+people are only infected for set amount of time (e.g. 30 seconds)
+cities are infected for longer periods of time (e.g. 2 minutes)
+when people lose infection, they become angry and can't be infected
+people can infect other people with anger temporarily (e.g. 10 seconds)
+if angry citizen collides with player, 5 second stun?
+information window to show infection status of cities and percentage of population
+healthy people run away from angry people? angry people chase down healthy people?
+emojis: angry, laughing, bored face. all need an alpha background
+buildings as rectangles? need circle/rect collision detection
+
+THINGS TO DO
+
+setup collision detection to prevent entering the sea (Billy)
+create citizen and city class to store position and state information about individual citizens and cities (Asher)
+create airport/seaport classes to store information about flights and ships (Luke)
+citizen state information needs to store current direction, length of time for movement left and ability to tick
+wrap world map left to right, but not top to bottom. lock camera and allow character to move in screen space?
+collision detection system for citizens/cities/player to check state and outcome (what happens if angry citizen collides with infected city?)
+create ability for player to board a flight or a ship to travel, animate?
+
+QUESTIONS
+
+player physics based movement? momentum? can they change direction every frame?

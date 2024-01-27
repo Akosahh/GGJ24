@@ -1,5 +1,4 @@
 import pygame
-import math
 
 # pygame setup
 pygame.init()
@@ -17,7 +16,7 @@ sound = pygame.mixer.Sound("./assets/sounds/main_laugh_1.wav")
 
 running = True
 dt = 0
-speed = 600
+speed = 80
 scroll = [0, 0]
 
 while running:
