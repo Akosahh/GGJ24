@@ -1,7 +1,7 @@
 import pygame
 from game import Game
 
-game = Game((1920, 1080), "didot.ttc", 72, "./assets/images/land_shallow_topo_8192.tif")
+game = Game("didot.ttc", 72, "./assets/images/land_shallow_topo_8192.tif")
 
 running = True
 
