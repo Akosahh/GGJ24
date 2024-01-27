@@ -1,7 +1,10 @@
 import pygame
 
 from entities import Player
+<<<<<<< HEAD
 from npccity import City
+=======
+>>>>>>> 2cb0f495c248ad44332cbdfefb71ae82200d15f8
 from port import PortFactory, Vehicle
 
 
@@ -22,6 +25,17 @@ class Game:
         self.city = City(self.background)
         self.city.create_population(50)
         self.city.create_population(100)
+
+        self.port_factory = PortFactory(
+            self.midground, "./assets/images/airport.svg", "./airports.json"
+        )
+        self.plane = Vehicle(
+            self.midground,
+            "./assets/images/airplane.png",
+            30,
+            self.port_factory.ports[1].position,
+            self.port_factory.ports[2].position,
+        )
 
         self.port_factory = PortFactory(
             self.midground, "./assets/images/airport.svg", "./airports.json"
@@ -68,7 +82,10 @@ class Game:
         pygame.display.flip()
 
     def render_entities(self):
+<<<<<<< HEAD
         self.city.render()
+=======
+>>>>>>> 2cb0f495c248ad44332cbdfefb71ae82200d15f8
         self.port_factory.render()
         self.plane.render()
 
@@ -97,6 +114,12 @@ class Game:
         self.check_horizontal(frame_speed)
 
         self.background_x_offset %= 8192
+<<<<<<< HEAD
+=======
+
+        self.background_x_offset = int(self.background_x_offset)
+        self.background_y_offset = int(self.background_y_offset)
+>>>>>>> 2cb0f495c248ad44332cbdfefb71ae82200d15f8
 
     def check_up(self, frame_speed):
         if self.keys[pygame.K_w]:
@@ -121,16 +144,16 @@ class Game:
                 self.player.get_x(), self.player.get_y() + frame_speed + 30
             ):
                 return
-            if self.player.vertical_offset > 0:
-                self.player.vertical_offset -= frame_speed
-            elif self.background_y_offset > 0:
-                self.background_y_offset -= frame_speed
+            if self.player.vertical_offset < 0:
+                self.player.vertical_offset += frame_speed
+            elif self.background_y_offset < (4096 - self.screen.get_height()):
+                self.background_y_offset += frame_speed
             else:
-                self.background_y_offset = 0
-                if self.player.vertical_offset > -self.screen.get_height() / 2:
-                    self.player.vertical_offset -= frame_speed
+                self.background_y_offset = (4096 - self.screen.get_height())
+                if self.player.vertical_offset < self.screen.get_height() / 2:
+                    self.player.vertical_offset += frame_speed
                 else:
-                    self.player.vertical_offset = -self.screen.get_height() / 2
+                    self.player.vertical_offset = self.screen.get_height() / 2
 
     def check_horizontal(self, frame_speed):
         if self.keys[pygame.K_a]:
