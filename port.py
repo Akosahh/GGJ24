@@ -19,6 +19,12 @@ class PortFactory:
     def render(self, x_offset, y_offset):
         for port in self.ports:
             port.render(x_offset, y_offset)
+    
+    def collision_checks(self, entity, bg_offset):
+        for port in self.ports:
+            for i in range(3):
+                if port.collision_check(entity, (bg_offset[0] - 8192 * i, bg_offset[1])):
+                    return port
 
 
 class Port:
@@ -32,11 +38,17 @@ class Port:
     def render(self, x_offset, y_offset):
         self.background.blit(self.image, self.get_render_position(x_offset, y_offset))
     
-    def collision(self, object):
-        x_min = self.position[0] + self.image.get_width()
-        x_max = self.position[0] + self.image.get_width()
-        y_min = self.position[1] + self.image.get_height()
-        y_max = self.position[1] + self.image.get_height()
+    def get_x(self):
+        return self.position[0]
+    
+    def get_y(self):
+        return self.position[1]
+    
+    def collision_check(self, entity, bg_offset):
+        x_diff = abs(self.get_x() - entity.get_x() - bg_offset[0])
+        y_diff = abs(self.get_y() - entity.get_y() - bg_offset[1])
+        distance = math.sqrt(math.pow(x_diff, 2) + math.pow(y_diff, 2))
+        return distance < (self.scale / 2) + (entity.scale / 2)
 
     def get_render_position(self, x_offset, y_offset):
         x_pos = self.position[0] - x_offset

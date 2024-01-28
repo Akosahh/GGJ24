@@ -13,6 +13,7 @@ class Game:
         self.font = pygame.font.SysFont(font, font_size)
         self.clock = pygame.time.Clock()
         self.background = pygame.image.load(background_asset).convert()
+        self.last_interaction = pygame.time.get_ticks()
 
         self.player = Player(self.screen, "./assets/images/laughing.png", 30, 100)
         self.city_factory = CityFactory(
@@ -43,12 +44,15 @@ class Game:
         self.check_exit()
         self.check_player_movement()
         self.plane_logic()
+        self.check_player_interactions()
 
         for city in self.city_factory.city_list:
             city.npc_list.move_npcs(self.dt, self.background)
             city.npc_list.collision_with_npcs_check(self.player, [self.background_x_offset, self.background_y_offset])
 
         self.screen.fill( (0,0,0) )
+
+        self.background_x_offset %= 8192
 
         for i in range(3):
             self.screen.blit(
@@ -76,13 +80,12 @@ class Game:
         self.keys = pygame.key.get_pressed()
 
     def check_player_movement(self):
-        frame_speed = self.player.speed * self.dt
+        if self.player.can_move:
+            frame_speed = self.player.speed * self.dt
 
-        self.check_up(frame_speed)
-        self.check_down(frame_speed)
-        self.check_horizontal(frame_speed)
-
-        self.background_x_offset %= 8192
+            self.check_up(frame_speed)
+            self.check_down(frame_speed)
+            self.check_horizontal(frame_speed)
 
     def check_up(self, frame_speed):
         if self.keys[pygame.K_w]:
@@ -151,3 +154,15 @@ class Game:
                     random.choice(self.plane_factory.ports).position,
                     random.choice(self.plane_factory.ports).position,
                 )
+    def check_player_interactions(self):
+        if self.keys[pygame.K_e] and (pygame.time.get_ticks() - self.last_interaction) > 100:
+            self.last_interaction = pygame.time.get_ticks()
+            if self.player.can_move:
+                port = self.port_factory.collision_checks(self.player, [self.background_x_offset, self.background_y_offset])
+
+                if port:
+                    self.background_x_offset = port.get_x() - self.player.get_x()
+                    self.background_y_offset = port.get_y() - self.player.get_y()
+                    self.player.can_move = False
+            else:
+                self.player.can_move = True

@@ -9,6 +9,7 @@ class Player:
         self.speed = speed
         self.scale = scale
         self.vertical_offset = 0
+        self.can_move = True
 
     def render(self):
         self.screen.blit(self.image, (self.get_x(), self.get_y()))
