@@ -16,9 +16,9 @@ class PortFactory:
                 Port(background, image_asset, port["scale"], port["position"])
             )
 
-    def render(self):
+    def render(self, x_offset, y_offset):
         for port in self.ports:
-            port.render()
+            port.render(x_offset, y_offset)
 
 
 class Port:
@@ -29,9 +29,13 @@ class Port:
         self.scale = scale
         self.position = position
 
-    def render(self):
-        self.background.blit(self.image, self.position)
+    def render(self, x_offset, y_offset):
+        self.background.blit(self.image, self.get_render_position(x_offset, y_offset))
 
+    def get_render_position(self, x_offset, y_offset):
+        x_pos = self.position[0] - x_offset
+        y_pos = self.position[1] - y_offset
+        return (x_pos, y_pos)
 
 class VehicleFactory:
     def __init__(self, background, image_asset, scale, count, ports):
@@ -53,9 +57,9 @@ class VehicleFactory:
                 )
             )
 
-    def render(self):
+    def render(self, x_offset, y_offset):
         for vehicle in self.vehicles:
-            vehicle.render()
+            vehicle.render(x_offset, y_offset)
 
 
 class Vehicle:
@@ -79,8 +83,13 @@ class Vehicle:
             False,
         )
 
-    def render(self):
-        self.background.blit(self.image, self.position)
+    def render(self, x_offset, y_offset):
+        self.background.blit(self.image, self.get_render_position(x_offset, y_offset))
+
+    def get_render_position(self, x_offset, y_offset):
+        x_pos = self.position[0] - x_offset
+        y_pos = self.position[1] - y_offset
+        return (x_pos, y_pos)
 
     def calculate_position(self):
         self.position = (

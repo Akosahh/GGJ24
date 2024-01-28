@@ -19,10 +19,9 @@ class CityFactory:
                 image=self.city_image
             ))
 
-    def render(self):
+    def render(self, x_offset, y_offset):
         for city in self.city_list:
-            city.render()
-
+            city.render(x_offset, y_offset)
 
 class City:
     def __init__(self, surface, location, scale, image):
@@ -34,10 +33,14 @@ class City:
         self.city_image = pygame.transform.scale(self.city_image, (self.scale, self.scale))
         self.npc_list = self.create_npc()
 
-    def render(self):
-        self.surface.blit(self.city_image, self.location)
-        self.npc_list.render()
+    def render(self, x_offset, y_offset):
+        self.surface.blit(self.city_image, self.get_render_position(x_offset, y_offset))
+        self.npc_list.render(x_offset, y_offset)
 
+    def get_render_position(self, x_offset, y_offset):
+        x_pos = self.location[0] - x_offset
+        y_pos = self.location[1] - y_offset
+        return (x_pos, y_pos)
 
     def create_npc(self):
         npc_factory = NpcFactory(
@@ -50,7 +53,6 @@ class City:
         npc_factory.add_npcs(position=[self.set_x_y_npc(150) for i in range(30)])
 
         return npc_factory
-
 
     def set_x_y_npc(self, radius_range):
 
