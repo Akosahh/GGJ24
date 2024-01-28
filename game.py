@@ -2,7 +2,7 @@ import random
 import pygame
 
 from entities import Player
-from npccity import City
+from city import CityFactory
 from port import PortFactory, VehicleFactory, Vehicle
 
 
@@ -20,9 +20,12 @@ class Game:
         )
 
         self.player = Player(self.screen, "./assets/images/laughing.png", 30, 100)
-        self.city = City(self.background)
-        self.city.create_population(50)
-        self.city.create_population(100)
+        self.city_factory = CityFactory(
+            surface=self.background,
+            locations=[(1800, 1200), (1771, 685)],
+            scale=90,
+            image="./assets/images/city_image_1.png"
+        )
 
         self.port_factory = PortFactory(
             self.midground, "./assets/images/airport.svg", "./airports.json"
@@ -46,6 +49,9 @@ class Game:
         self.check_player_movement()
         self.plane_logic()
 
+        for city in self.city_factory.city_list:
+            city.npc_list.collision_with_npcs_check(self.player, [self.background_x_offset, self.background_y_offset])
+
         self.screen.fill("black")
         self.midground.fill(pygame.Color(0, 0, 0, 0))
 
@@ -67,7 +73,7 @@ class Game:
         pygame.display.flip()
 
     def render_entities(self):
-        self.city.render()
+        self.city_factory.render()
         self.port_factory.render()
         self.plane_factory.render()
 

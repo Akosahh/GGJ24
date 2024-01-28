@@ -1,6 +1,6 @@
 import pygame
 from game import Game
-from npccity import City
+from city import City
 
 game = Game("didot.ttc", 72, "./assets/images/land_shallow_topo_8192.tif")
 
