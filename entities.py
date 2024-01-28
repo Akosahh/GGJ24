@@ -20,18 +20,10 @@ class Player:
     def get_y(self):
         return (self.screen.get_height() / 2) + self.vertical_offset
 
-    def collision_with_npc_check(self, npc_position_list, npc_scale, player_pos):
-        collision = False
-        for position in npc_position_list:
+    def collision_with_npc_check(self, npc, bg_offset):
+        x_min = npc.position[0] - npc.scale
+        x_max = npc.position[0] + npc.scale
+        y_min = npc.position[1] - npc.scale
+        y_max = npc.position[1] + npc.scale
 
-            x_min = position[0] - npc_scale
-            x_max = position[0] + npc_scale
-            y_min = position[1] - npc_scale
-            y_max = position[1] + npc_scale
-
-            if (x_min < (player_pos[0] + self.get_x()) < x_max) and (y_min < (player_pos[1] + self.get_y()) < y_max):
-
-                collision = True
-                print(collision)
-                return position
-        return None
+        return (x_min < (bg_offset[0] + self.get_x()) < x_max) and (y_min < (bg_offset[1] + self.get_y()) < y_max)

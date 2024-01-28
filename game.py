@@ -31,11 +31,8 @@ class Game:
         self.get_key_presses()
         self.check_player_movement()
 
-        self.player.collision_with_npc_check(
-            npc_position_list=self.city_factory.city_list[0].npc_list.get_positions(),
-            npc_scale=self.city_factory.city_list[0].npc_list.scale,
-            player_pos=[self.background_x_offset, self.background_y_offset]
-        )
+        for city in self.city_factory.city_list:
+            city.npc_list.collision_with_npcs_check(self.player, [self.background_x_offset, self.background_y_offset])
 
         self.screen.fill("black")
 
