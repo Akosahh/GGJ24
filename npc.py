@@ -29,8 +29,9 @@ class NpcFactory:
         for i in range(len(self.npc_list)):
             npc = self.npc_list[i]
             if not npc.infected:
-                if npc.collision_check(player, bg_offset):
-                    npc.infected = True
+                for i in range(3):
+                    if npc.collision_check(player, (bg_offset[0] - 8192 * i, bg_offset[1])):
+                        npc.infected = True
             else:
                 for j in range(len(self.npc_list)):
                     if i == j:
