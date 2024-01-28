@@ -169,7 +169,7 @@ class Game:
                     self.on_flight = self.plane_factory.vehicles[i]
 
     def check_player_interactions(self):
-        if self.keys[pygame.K_e] and (pygame.time.get_ticks() - self.last_interaction) > 100:
+        if self.keys[pygame.K_e] and (pygame.time.get_ticks() - self.last_interaction) > 200:
             self.last_interaction = pygame.time.get_ticks()
             if self.player.can_move:
                 port = self.port_factory.collision_checks(self.player, [self.background_x_offset, self.background_y_offset])
