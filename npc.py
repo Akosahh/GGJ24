@@ -22,9 +22,9 @@ class NpcFactory:
     def get_positions(self):
         return [n.position for n in self.npc_list]
     
-    def move_npcs(self, dt):
+    def move_npcs(self, dt, background_image):
         for npc in self.npc_list:
-            npc.move(dt)
+            npc.move(dt, background_image)
 
     def collision_with_npcs_check(self, player, bg_offset):
         for npc in self.npc_list:
@@ -61,10 +61,16 @@ class Npc:
         y_pos = self.position[1] - y_offset
         return (x_pos, y_pos)
 
-    def move(self, dt):
+    def move(self, dt, background_image):
         x_pos = self.position[0] + self.x_vel * dt
         y_pos = self.position[1] + self.y_vel * dt
+        if self.check_position_is_sea(x_pos, y_pos, background_image):
+            self.new_direction()
+            return
         self.position = (x_pos, y_pos)
+
+    def check_position_is_sea(self, x, y, background_image):
+        return background_image.get_at((int(x), int(y))) == (10, 10, 51, 255)
 
     def collision_with_npc_check(self, player, bg_offset):
         x_min = self.position[0] - self.scale
