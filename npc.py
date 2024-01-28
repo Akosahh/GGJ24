@@ -27,11 +27,17 @@ class NpcFactory:
             npc.move(dt, background_image)
 
     def collision_with_npcs_check(self, player, bg_offset):
-        for npc in self.npc_list:
-            if not npc.infected:
-                if npc.collision_with_npc_check(player, bg_offset):
-                    npc.citizen_image = pygame.image.load("./assets/images/laughing.png")
-                    npc.citizen_image = pygame.transform.scale(npc.citizen_image, (npc.scale, npc.scale))
+        for i in range(len(self.npc_list)):
+            npc = self.npc_list[i]
+            if npc.collision_check(player, bg_offset):
+                npc.citizen_image = pygame.image.load("./assets/images/laughing.png")
+                npc.citizen_image = pygame.transform.scale(npc.citizen_image, (npc.scale, npc.scale))
+            for j in range(i + 1, len(self.npc_list)):
+                second_npc = self.npc_list[j]
+                if not second_npc.infected:
+                    if npc.collision_check(second_npc, (0,0)):
+                        second_npc.citizen_image = pygame.image.load("./assets/images/laughing.png")
+                        second_npc.citizen_image = pygame.transform.scale(npc.citizen_image, (npc.scale, npc.scale))
 
 class Npc:
     def __init__(self, surface, scale, image, position, speed):
@@ -60,6 +66,12 @@ class Npc:
         x_pos = self.position[0] - x_offset
         y_pos = self.position[1] - y_offset
         return (x_pos, y_pos)
+    
+    def get_x(self):
+        return self.position[0]
+    
+    def get_y(self):
+        return self.position[1]
 
     def move(self, dt, background_image):
         x_pos = self.position[0] + self.x_vel * dt
@@ -72,13 +84,11 @@ class Npc:
     def check_position_is_sea(self, x, y, background_image):
         return background_image.get_at((int(x), int(y))) == (10, 10, 51, 255)
 
-    def collision_with_npc_check(self, player, bg_offset):
-        x_min = self.position[0] - self.scale
-        x_max = self.position[0] + self.scale
-        y_min = self.position[1] - self.scale
-        y_max = self.position[1] + self.scale
-
-        return (x_min < (bg_offset[0] + player.get_x()) < x_max) and (y_min < (bg_offset[1] + player.get_y()) < y_max)
+    def collision_check(self, entity, bg_offset):
+        x_diff = abs(self.get_x() - entity.get_x() - bg_offset[0])
+        y_diff = abs(self.get_y() - entity.get_y() - bg_offset[1])
+        distance = math.sqrt(math.pow(x_diff, 2) + math.pow(y_diff, 2))
+        return distance < (self.scale / 2) + (entity.scale / 2)
 
 
 
