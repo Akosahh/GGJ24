@@ -153,6 +153,9 @@ class Game:
                 if self.on_flight == plane:
                     self.on_flight = None
                     plane.start_port.player_waiting = False
+                    self.player.can_move = True
+                    self.last_port.player_waiting = False
+                    self.last_port = None
                     
                 start_port = random.choice(self.plane_factory.ports)
                 end_port = random.choice(self.plane_factory.ports)
@@ -180,7 +183,7 @@ class Game:
                     self.player.can_move = False
                     port.player_waiting = True
                     self.last_port = port
-            else:
+            elif not self.on_flight:
                 self.player.can_move = True
                 self.last_port.player_waiting = False
                 self.last_port = None
