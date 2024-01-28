@@ -19,6 +19,12 @@ class PortFactory:
     def render(self, x_offset, y_offset):
         for port in self.ports:
             port.render(x_offset, y_offset)
+    
+    def collision_checks(self, entity, bg_offset):
+        for port in self.ports:
+            for i in range(3):
+                if port.collision_check(entity, (bg_offset[0] - 8192 * i, bg_offset[1])):
+                    return port
 
 
 class Port:
@@ -28,9 +34,22 @@ class Port:
         self.image = pygame.transform.scale(self.image, (scale, scale))
         self.scale = scale
         self.position = position
+        self.player_waiting = False
 
     def render(self, x_offset, y_offset):
         self.background.blit(self.image, self.get_render_position(x_offset, y_offset))
+    
+    def get_x(self):
+        return self.position[0]
+    
+    def get_y(self):
+        return self.position[1]
+    
+    def collision_check(self, entity, bg_offset):
+        x_diff = abs(self.get_x() - entity.get_x() - bg_offset[0])
+        y_diff = abs(self.get_y() - entity.get_y() - bg_offset[1])
+        distance = math.sqrt(math.pow(x_diff, 2) + math.pow(y_diff, 2))
+        return distance < (self.scale / 2) + (entity.scale / 2)
 
     def get_render_position(self, x_offset, y_offset):
         x_pos = self.position[0] - x_offset
@@ -47,13 +66,16 @@ class VehicleFactory:
         self.vehicles = []
 
         for i in range(count):
+            start_port = random.choice(self.ports)
+            end_port = random.choice(self.ports)
+            
             self.vehicles.append(
                 Vehicle(
                     self.background,
                     self.image_asset,
                     self.scale,
-                    random.choice(self.ports).position,
-                    random.choice(self.ports).position,
+                    start_port,
+                    end_port,
                 )
             )
 
@@ -63,13 +85,15 @@ class VehicleFactory:
 
 
 class Vehicle:
-    def __init__(self, background, image_asset, scale, start_position, end_position):
+    def __init__(self, background, image_asset, scale, start_port, end_port):
         self.background = background
         self.image = pygame.image.load(image_asset)
         self.scale = scale
-        self.start_position = start_position
-        self.end_position = end_position
-        self.position = start_position
+        self.start_port = start_port
+        self.end_port = end_port
+        self.start_position = start_port.position
+        self.end_position = end_port.position
+        self.position = self.start_position
         self.complete = 0
         self.step = 0.01
         self.distance = math.sqrt(
@@ -99,3 +123,9 @@ class Vehicle:
             + self.complete * self.end_position[1],
         )
         self.complete += self.step
+
+    def get_x(self):
+        return self.position[0]
+    
+    def get_y(self):
+        return self.position[1]
