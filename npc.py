@@ -55,9 +55,11 @@ class Npc:
         self.bored_image = pygame.transform.scale(self.bored_image, (self.scale, self.scale))
         self.laughing_image = pygame.image.load("./assets/images/laughing.png")
         self.laughing_image = pygame.transform.scale(self.laughing_image, (self.scale, self.scale))
+        self.angry_image = pygame.image.load("./assets/images/angry_emoji.png")
+        self.angry_image = pygame.transform.scale(self.angry_image, (self.scale, self.scale))
 
         self.position = position
-        self.infected = False
+        self.infected = 0
         self.time = 0
 
         self.speed = speed
@@ -72,10 +74,12 @@ class Npc:
         self.y_vel = math.sin(self.direction) * self.speed    
 
     def render(self, x_offset, y_offset):
-        if self.infected:
-            self.surface.blit(self.laughing_image, self.get_render_position(x_offset, y_offset))
-        else:
+        if self.infected == 0:
             self.surface.blit(self.bored_image, self.get_render_position(x_offset, y_offset))
+        elif self.infected == 1:
+            self.surface.blit(self.laughing_image, self.get_render_position(x_offset, y_offset))
+        elif self.infected == 2:
+            self.surface.blit(self.angry_image, self.get_render_position(x_offset, y_offset))
 
     def get_render_position(self, x_offset, y_offset):
         x_pos = self.position[0] - x_offset
@@ -106,9 +110,16 @@ class Npc:
         return distance < (self.scale / 2) + (entity.scale / 2)
 
     def timer(self, time):
-        if self.infected:
+        if self.infected == 1:
+            self.time += time
+
+            if self.time >= 10:
+                self.infected = 2
+                self.time = 0
+
+        elif self.infected == 2:
             self.time += time
 
             if self.time >= 5:
-                self.infected = False
+                self.infected = 0
                 self.time = 0
