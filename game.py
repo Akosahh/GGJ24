@@ -15,6 +15,7 @@ class Game:
         self.background = pygame.image.load(background_asset).convert()
         self.last_interaction = pygame.time.get_ticks()
         self.on_flight = None
+        self.last_port = None
 
         self.player = Player(self.screen, "./assets/images/laughing.png", 30, 100)
         self.city_factory = CityFactory(
@@ -178,8 +179,12 @@ class Game:
                     self.background_y_offset = port.get_y() - self.player.get_y()
                     self.player.can_move = False
                     port.player_waiting = True
+                    self.last_port = port
             else:
                 self.player.can_move = True
+                self.last_port.player_waiting = False
+                self.last_port = None
+                
     
     def handle_flight(self):
         if self.on_flight:
