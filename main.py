@@ -1,6 +1,12 @@
+import sys
+import os
 import pygame
+
 from game import Game
 from city import City
+
+if getattr(sys, 'frozen', False):
+    os.chdir(sys._MEIPASS)
 
 game = Game("didot.ttc", 72, "./assets/images/land_shallow_topo_8192.tif")
 

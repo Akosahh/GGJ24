@@ -70,6 +70,10 @@ Work in progress...
 
 Work in progress...
 
+``` sh
+pyinstaller --onefile --name "The Global Giggle" --nowindow --add-data "assets/images/*;assets/images" --add-data "assets/sounds/*;assets/sounds" --add-data "assets/data/*;assets/data" .\main.py
+```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 

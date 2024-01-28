@@ -39,7 +39,7 @@ class Game:
         )
 
         self.port_factory = PortFactory(
-            self.screen, "./assets/images/airport.svg", "./airports.json"
+            self.screen, "./assets/images/airport.svg", "./assets/data/airports.json"
         )
         self.plane_factory = VehicleFactory(
             self.screen,
