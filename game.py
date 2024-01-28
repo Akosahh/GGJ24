@@ -1,10 +1,9 @@
 import random
 import pygame
 
-from entities import Player
+from player import Player
 from city import CityFactory
 from port import PortFactory, VehicleFactory, Vehicle
-
 
 class Game:
     def __init__(self, font, font_size, background_asset):
@@ -14,24 +13,20 @@ class Game:
         self.font = pygame.font.SysFont(font, font_size)
         self.clock = pygame.time.Clock()
         self.background = pygame.image.load(background_asset).convert()
-        self.midground = pygame.Surface(
-            (8192, 4096),
-            flags=pygame.SRCALPHA,
-        )
 
         self.player = Player(self.screen, "./assets/images/laughing.png", 30, 100)
         self.city_factory = CityFactory(
-            surface=self.background,
+            surface=self.screen,
             locations=[(1800, 1200), (1771, 685)],
             scale=90,
             image="./assets/images/city_image_1.png"
         )
 
         self.port_factory = PortFactory(
-            self.midground, "./assets/images/airport.svg", "./airports.json"
+            self.screen, "./assets/images/airport.svg", "./airports.json"
         )
         self.plane_factory = VehicleFactory(
-            self.midground,
+            self.screen,
             "./assets/images/airplane.png",
             30,
             10,
@@ -50,32 +45,24 @@ class Game:
         self.plane_logic()
 
         for city in self.city_factory.city_list:
+            city.npc_list.move_npcs(self.dt, self.background)
             city.npc_list.collision_with_npcs_check(self.player, [self.background_x_offset, self.background_y_offset])
 
-        self.screen.fill("black")
-        self.midground.fill(pygame.Color(0, 0, 0, 0))
-
-        self.render_entities()
+        self.screen.fill( (0,0,0) )
 
         for i in range(3):
             self.screen.blit(
                 self.background,
                 ((-self.background_x_offset + 8192 * i, -self.background_y_offset)),
             )
-            self.screen.blit(
-                self.midground,
-                ((-self.background_x_offset + 8192 * i, -self.background_y_offset)),
-            )
-
+            self.city_factory.render(self.background_x_offset - 8192 * i, self.background_y_offset)
+            self.port_factory.render(self.background_x_offset - 8192 * i, self.background_y_offset)
+            self.plane_factory.render(self.background_x_offset - 8192 * i, self.background_y_offset)
+        
         self.player.render()
         self.render_ui()
 
         pygame.display.flip()
-
-    def render_entities(self):
-        self.city_factory.render()
-        self.port_factory.render()
-        self.plane_factory.render()
 
     def render_ui(self):
         position_info = self.font.render(

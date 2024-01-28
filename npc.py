@@ -1,55 +1,100 @@
-import pygame
+import math
 import random
-
+import pygame
 
 class NpcFactory:
-    def __init__(self, surface, scale, image):
+    def __init__(self, surface, scale):
         self.surface = surface
         self.scale = scale
-        self.citizen_image = image
         self.npc_list = []
         self.population = len(self.npc_list)
 
-
-    def render(self):
+    def render(self, x_offset, y_offset):
         for npc in self.npc_list:
-            npc.render()
+            npc.render(x_offset, y_offset)
 
     def add_npcs(self, position):
         for i in range(len(position)):
-            self.npc_list.append(Npc(self.surface, self.scale, self.citizen_image, position[i]))
+            self.npc_list.append(Npc(self.surface, self.scale, position[i], 50))
         self.population = len(self.npc_list)
 
     def get_positions(self):
         return [n.position for n in self.npc_list]
+    
+    def move_npcs(self, dt, background_image):
+        for npc in self.npc_list:
+            npc.move(dt, background_image)
 
     def collision_with_npcs_check(self, player, bg_offset):
-        for npc in self.npc_list:
+        for i in range(len(self.npc_list)):
+            npc = self.npc_list[i]
             if not npc.infected:
-                if npc.collision_with_npc_check(player, bg_offset):
-                    npc.citizen_image = pygame.image.load("./assets/images/laughing.png")
-                    npc.citizen_image = pygame.transform.scale(npc.citizen_image, (npc.scale, npc.scale))
-
+                for i in range(3):
+                    if npc.collision_check(player, (bg_offset[0] - 8192 * i, bg_offset[1])):
+                        npc.infected = True
+            else:
+                for j in range(len(self.npc_list)):
+                    if i == j:
+                        continue
+                    second_npc = self.npc_list[j]
+                    if not second_npc.infected:
+                        if npc.collision_check(second_npc, (0,0)):
+                            second_npc.infected = True
 
 class Npc:
-    def __init__(self, surface, scale, image, position):
+    def __init__(self, surface, scale, position, speed):
         self.surface = surface
         self.scale = scale
-        self.citizen_image = pygame.image.load(image)
-        self.citizen_image = pygame.transform.scale(self.citizen_image, (self.scale, self.scale))
+
+        self.bored_image = pygame.image.load("./assets/images/bored_emoji.png")
+        self.bored_image = pygame.transform.scale(self.bored_image, (self.scale, self.scale))
+        self.laughing_image = pygame.image.load("./assets/images/laughing.png")
+        self.laughing_image = pygame.transform.scale(self.laughing_image, (self.scale, self.scale))
+
         self.position = position
         self.infected = False
 
-    def render(self):
-        self.surface.blit(self.citizen_image, self.position)
+        self.speed = speed
+        self.new_direction()
 
-    def collision_with_npc_check(self, player, bg_offset):
-        x_min = self.position[0] - self.scale
-        x_max = self.position[0] + self.scale
-        y_min = self.position[1] - self.scale
-        y_max = self.position[1] + self.scale
+    def new_direction(self):
 
-        return (x_min < (bg_offset[0] + player.get_x()) < x_max) and (y_min < (bg_offset[1] + player.get_y()) < y_max)
+        # Direction of 0 = moving right
+        self.direction = math.radians(random.randrange(0, 360, 30))
 
+        self.x_vel = math.cos(self.direction) * self.speed
+        self.y_vel = math.sin(self.direction) * self.speed    
 
+    def render(self, x_offset, y_offset):
+        if self.infected:
+            self.surface.blit(self.laughing_image, self.get_render_position(x_offset, y_offset))
+        else:
+            self.surface.blit(self.bored_image, self.get_render_position(x_offset, y_offset))
 
+    def get_render_position(self, x_offset, y_offset):
+        x_pos = self.position[0] - x_offset
+        y_pos = self.position[1] - y_offset
+        return (x_pos, y_pos)
+    
+    def get_x(self):
+        return self.position[0]
+    
+    def get_y(self):
+        return self.position[1]
+
+    def move(self, dt, background_image):
+        x_pos = self.position[0] + self.x_vel * dt
+        y_pos = self.position[1] + self.y_vel * dt
+        if self.check_position_is_sea(x_pos, y_pos, background_image):
+            self.new_direction()
+            return
+        self.position = (x_pos, y_pos)
+
+    def check_position_is_sea(self, x, y, background_image):
+        return background_image.get_at((int(x), int(y))) == (10, 10, 51, 255)
+
+    def collision_check(self, entity, bg_offset):
+        x_diff = abs(self.get_x() - entity.get_x() - bg_offset[0])
+        y_diff = abs(self.get_y() - entity.get_y() - bg_offset[1])
+        distance = math.sqrt(math.pow(x_diff, 2) + math.pow(y_diff, 2))
+        return distance < (self.scale / 2) + (entity.scale / 2)
