@@ -69,6 +69,7 @@ class Game:
                 self.background,
                 ((-self.background_x_offset + 8192 * i, -self.background_y_offset)),
             )
+        for i in range(3):
             self.city_factory.render(self.background_x_offset - 8192 * i, self.background_y_offset)
             self.port_factory.render(self.background_x_offset - 8192 * i, self.background_y_offset)
             self.plane_factory.render(self.background_x_offset - 8192 * i, self.background_y_offset)
