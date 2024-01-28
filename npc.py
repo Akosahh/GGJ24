@@ -97,6 +97,3 @@ class Npc:
         y_diff = abs(self.get_y() - entity.get_y() - bg_offset[1])
         distance = math.sqrt(math.pow(x_diff, 2) + math.pow(y_diff, 2))
         return distance < (self.scale / 2) + (entity.scale / 2)
-
-
-

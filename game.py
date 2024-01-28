@@ -55,17 +55,14 @@ class Game:
                 self.background,
                 ((-self.background_x_offset + 8192 * i, -self.background_y_offset)),
             )
+            self.city_factory.render(self.background_x_offset - 8192 * i, self.background_y_offset)
+            self.port_factory.render(self.background_x_offset - 8192 * i, self.background_y_offset)
+            self.plane_factory.render(self.background_x_offset - 8192 * i, self.background_y_offset)
         
-        self.render_entities()
+        self.player.render()
         self.render_ui()
 
         pygame.display.flip()
-
-    def render_entities(self):
-        self.player.render()
-        self.city_factory.render(self.background_x_offset, self.background_y_offset)
-        self.port_factory.render(self.background_x_offset, self.background_y_offset)
-        self.plane_factory.render(self.background_x_offset, self.background_y_offset)
 
     def render_ui(self):
         position_info = self.font.render(

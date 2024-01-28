@@ -74,4 +74,3 @@ class City:
         elif 270 <= angle <= 360:
             x, y = self.centre[0] + random_x_mod * math.cos(angle), self.centre[1] - random_y_mod * math.sin(angle)
             return (x, y)
-
