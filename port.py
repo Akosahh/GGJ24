@@ -32,6 +32,7 @@ class Port:
     def render(self):
         self.background.blit(self.image, self.position)
 
+
 class VehicleFactory:
     def __init__(self, background, image_asset, scale, count, ports):
         self.background = background
@@ -42,12 +43,19 @@ class VehicleFactory:
         self.vehicles = []
 
         for i in range(count):
-            self.vehicles.append(Vehicle(self.background, self.image_asset, self.scale, random.choice(self.ports).position, random.choice(self.ports).position))
-    
+            self.vehicles.append(
+                Vehicle(
+                    self.background,
+                    self.image_asset,
+                    self.scale,
+                    random.choice(self.ports).position,
+                    random.choice(self.ports).position,
+                )
+            )
+
     def render(self):
         for vehicle in self.vehicles:
             vehicle.render()
-        
 
 
 class Vehicle:
@@ -65,7 +73,11 @@ class Vehicle:
             + pow(self.end_position[1] - self.start_position[1], 2)
         )
         self.image = pygame.transform.scale(self.image, (1.5 * scale, scale))
-        self.image = pygame.transform.flip(self.image, True if self.start_position[0] < self.end_position[0] else False, False)
+        self.image = pygame.transform.flip(
+            self.image,
+            True if self.start_position[0] < self.end_position[0] else False,
+            False,
+        )
 
     def render(self):
         self.background.blit(self.image, self.position)
