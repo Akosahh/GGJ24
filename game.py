@@ -3,7 +3,7 @@ import pygame
 
 from player import Player
 from city import CityFactory
-from port import PortFactory, VehicleFactory, Vehicle
+from port import PortFactory, VehicleFactory, Vehicle, Port
 
 class Game:
     def __init__(self, font, font_size, background_asset):
@@ -14,6 +14,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.background = pygame.image.load(background_asset).convert()
         self.last_interaction = pygame.time.get_ticks()
+        self.on_flight = None
 
         self.player = Player(self.screen, "./assets/images/laughing.png", 30, 100)
         self.city_factory = CityFactory(
@@ -43,6 +44,7 @@ class Game:
         self.get_key_presses()
         self.check_exit()
         self.check_player_movement()
+        self.handle_flight()
         self.plane_logic()
         self.check_player_interactions()
 
@@ -147,13 +149,24 @@ class Game:
             if plane.complete < 1:
                 plane.calculate_position()
             else:
+                if self.on_flight == plane:
+                    self.on_flight = None
+                    plane.start_port.player_waiting = False
+                    
+                start_port = random.choice(self.plane_factory.ports)
+                end_port = random.choice(self.plane_factory.ports)
+
                 self.plane_factory.vehicles[i] = Vehicle(
                     self.plane_factory.background,
                     self.plane_factory.image_asset,
                     self.plane_factory.scale,
-                    random.choice(self.plane_factory.ports).position,
-                    random.choice(self.plane_factory.ports).position,
+                    start_port,
+                    end_port,
                 )
+
+                if start_port.player_waiting:
+                    self.on_flight = self.plane_factory.vehicles[i]
+
     def check_player_interactions(self):
         if self.keys[pygame.K_e] and (pygame.time.get_ticks() - self.last_interaction) > 100:
             self.last_interaction = pygame.time.get_ticks()
@@ -164,5 +177,11 @@ class Game:
                     self.background_x_offset = port.get_x() - self.player.get_x()
                     self.background_y_offset = port.get_y() - self.player.get_y()
                     self.player.can_move = False
+                    port.player_waiting = True
             else:
                 self.player.can_move = True
+    
+    def handle_flight(self):
+        if self.on_flight:
+            self.background_x_offset = self.on_flight.get_x() - self.player.get_x()
+            self.background_y_offset = self.on_flight.get_y() - self.player.get_y()
