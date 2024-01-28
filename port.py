@@ -31,6 +31,12 @@ class Port:
 
     def render(self, x_offset, y_offset):
         self.background.blit(self.image, self.get_render_position(x_offset, y_offset))
+    
+    def collision(self, object):
+        x_min = self.position[0] + self.image.get_width()
+        x_max = self.position[0] + self.image.get_width()
+        y_min = self.position[1] + self.image.get_height()
+        y_max = self.position[1] + self.image.get_height()
 
     def get_render_position(self, x_offset, y_offset):
         x_pos = self.position[0] - x_offset
