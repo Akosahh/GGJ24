@@ -9,6 +9,7 @@ class Game:
     def __init__(self, font, font_size, background_asset):
         pygame.init()
 
+        self.all_infected = False
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.font = pygame.font.SysFont(font, font_size)
         self.clock = pygame.time.Clock()
@@ -43,8 +44,7 @@ class Game:
         self.check_exit()
         self.check_player_movement()
         self.plane_logic()
-        self.all_infected = False
-        self.win = False
+
         all_cities_infected = True
 
         for city in self.city_factory.city_list:
