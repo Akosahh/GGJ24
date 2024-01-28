@@ -43,11 +43,20 @@ class Game:
         self.check_exit()
         self.check_player_movement()
         self.plane_logic()
+        self.all_infected = False
+        self.win = False
+        all_cities_infected = True
 
         for city in self.city_factory.city_list:
             city.npc_list.move_npcs(self.dt, self.background)
             city.npc_list.collision_with_npcs_check(self.player, [self.background_x_offset, self.background_y_offset])
             city.npc_list.timers(self.dt)
+
+            if not city.npc_list.check_all_infected():
+                all_cities_infected = False
+
+        if all_cities_infected:
+            self.all_infected = True
 
         self.screen.fill( (0,0,0) )
 
@@ -72,6 +81,15 @@ class Game:
             (255, 0, 0),
         )
         self.screen.blit(position_info, (20, 20))
+
+        if self.all_infected:
+            position_info = self.font.render(
+                f"You Win!",
+                True,
+                (255, 0, 0)
+            )
+            self.screen.blit(position_info, (600, 500))
+
 
     def get_key_presses(self):
         self.keys = pygame.key.get_pressed()

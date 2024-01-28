@@ -45,6 +45,14 @@ class NpcFactory:
         for npc in self.npc_list:
             npc.timer(time)
 
+    def check_all_infected(self):
+        all_infected = True
+        for npc in self.npc_list:
+            if npc.infected != 1:
+                all_infected = False
+
+        return all_infected
+
 
 class Npc:
     def __init__(self, surface, scale, position, speed):
@@ -113,7 +121,7 @@ class Npc:
         if self.infected == 1:
             self.time += time
 
-            if self.time >= 10:
+            if self.time >= 20:
                 self.infected = 2
                 self.time = 0
 
@@ -123,3 +131,4 @@ class Npc:
             if self.time >= 5:
                 self.infected = 0
                 self.time = 0
+
