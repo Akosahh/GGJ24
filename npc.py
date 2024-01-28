@@ -41,6 +41,11 @@ class NpcFactory:
                         if npc.collision_check(second_npc, (0,0)):
                             second_npc.infected = True
 
+    def timers(self, time):
+        for npc in self.npc_list:
+            npc.timer(time)
+
+
 class Npc:
     def __init__(self, surface, scale, position, speed):
         self.surface = surface
@@ -53,6 +58,7 @@ class Npc:
 
         self.position = position
         self.infected = False
+        self.time = 0
 
         self.speed = speed
         self.new_direction()
@@ -98,3 +104,11 @@ class Npc:
         y_diff = abs(self.get_y() - entity.get_y() - bg_offset[1])
         distance = math.sqrt(math.pow(x_diff, 2) + math.pow(y_diff, 2))
         return distance < (self.scale / 2) + (entity.scale / 2)
+
+    def timer(self, time):
+        if self.infected:
+            self.time += time
+
+            if self.time >= 5:
+                self.infected = False
+                self.time = 0
