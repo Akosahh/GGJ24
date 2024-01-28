@@ -47,6 +47,7 @@ class Game:
         for city in self.city_factory.city_list:
             city.npc_list.move_npcs(self.dt, self.background)
             city.npc_list.collision_with_npcs_check(self.player, [self.background_x_offset, self.background_y_offset])
+            city.npc_list.timers(self.dt)
 
         self.screen.fill( (0,0,0) )
 
