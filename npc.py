@@ -3,10 +3,9 @@ import random
 import pygame
 
 class NpcFactory:
-    def __init__(self, surface, scale, image):
+    def __init__(self, surface, scale):
         self.surface = surface
         self.scale = scale
-        self.citizen_image = image
         self.npc_list = []
         self.population = len(self.npc_list)
 
@@ -16,7 +15,7 @@ class NpcFactory:
 
     def add_npcs(self, position):
         for i in range(len(position)):
-            self.npc_list.append(Npc(self.surface, self.scale, self.citizen_image, position[i], 50))
+            self.npc_list.append(Npc(self.surface, self.scale, position[i], 50))
         self.population = len(self.npc_list)
 
     def get_positions(self):
@@ -29,22 +28,28 @@ class NpcFactory:
     def collision_with_npcs_check(self, player, bg_offset):
         for i in range(len(self.npc_list)):
             npc = self.npc_list[i]
-            if npc.collision_check(player, bg_offset):
-                npc.citizen_image = pygame.image.load("./assets/images/laughing.png")
-                npc.citizen_image = pygame.transform.scale(npc.citizen_image, (npc.scale, npc.scale))
-            for j in range(i + 1, len(self.npc_list)):
-                second_npc = self.npc_list[j]
-                if not second_npc.infected:
-                    if npc.collision_check(second_npc, (0,0)):
-                        second_npc.citizen_image = pygame.image.load("./assets/images/laughing.png")
-                        second_npc.citizen_image = pygame.transform.scale(npc.citizen_image, (npc.scale, npc.scale))
+            if not npc.infected:
+                if npc.collision_check(player, bg_offset):
+                    npc.infected = True
+            else:
+                for j in range(len(self.npc_list)):
+                    if i == j:
+                        continue
+                    second_npc = self.npc_list[j]
+                    if not second_npc.infected:
+                        if npc.collision_check(second_npc, (0,0)):
+                            second_npc.infected = True
 
 class Npc:
-    def __init__(self, surface, scale, image, position, speed):
+    def __init__(self, surface, scale, position, speed):
         self.surface = surface
         self.scale = scale
-        self.citizen_image = pygame.image.load(image)
-        self.citizen_image = pygame.transform.scale(self.citizen_image, (self.scale, self.scale))
+
+        self.bored_image = pygame.image.load("./assets/images/bored_emoji.png")
+        self.bored_image = pygame.transform.scale(self.bored_image, (self.scale, self.scale))
+        self.laughing_image = pygame.image.load("./assets/images/laughing.png")
+        self.laughing_image = pygame.transform.scale(self.laughing_image, (self.scale, self.scale))
+
         self.position = position
         self.infected = False
 
@@ -60,7 +65,10 @@ class Npc:
         self.y_vel = math.sin(self.direction) * self.speed    
 
     def render(self, x_offset, y_offset):
-        self.surface.blit(self.citizen_image, self.get_render_position(x_offset, y_offset))
+        if self.infected:
+            self.surface.blit(self.laughing_image, self.get_render_position(x_offset, y_offset))
+        else:
+            self.surface.blit(self.bored_image, self.get_render_position(x_offset, y_offset))
 
     def get_render_position(self, x_offset, y_offset):
         x_pos = self.position[0] - x_offset

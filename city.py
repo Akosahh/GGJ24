@@ -46,7 +46,6 @@ class City:
         npc_factory = NpcFactory(
             surface=self.surface,
             scale=25,
-            image="./assets/images/bored_emoji.png",
         )
 
         npc_factory.add_npcs(position=[self.set_x_y_npc(100) for i in range(20)])
