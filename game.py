@@ -20,7 +20,20 @@ class Game:
         self.player = Player(self.screen, "./assets/images/laughing.png", 30, 100)
         self.city_factory = CityFactory(
             surface=self.screen,
-            locations=[(1800, 1200), (1771, 685)],
+            locations=[
+                (1800, 1200),
+                (1771, 685),
+                (2100, 1200),
+                (2490, 2100),
+                (4016, 1503),
+                (4686, 1683),
+                (4655, 2673),
+                (7145, 2593),
+                (4586, 932),
+                (5485, 692),
+                (5996, 1243),
+                (6725, 662),
+            ],
             scale=90,
             image="./assets/images/city_image_1.png"
         )
@@ -63,6 +76,7 @@ class Game:
                 self.background,
                 ((-self.background_x_offset + 8192 * i, -self.background_y_offset)),
             )
+        for i in range(3):
             self.city_factory.render(self.background_x_offset - 8192 * i, self.background_y_offset)
             self.port_factory.render(self.background_x_offset - 8192 * i, self.background_y_offset)
             self.plane_factory.render(self.background_x_offset - 8192 * i, self.background_y_offset)

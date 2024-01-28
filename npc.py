@@ -93,7 +93,7 @@ class Npc:
         return self.position[1]
 
     def move(self, dt, background_image):
-        x_pos = self.position[0] + self.x_vel * dt
+        x_pos = (self.position[0] + self.x_vel * dt) % 8192
         y_pos = self.position[1] + self.y_vel * dt
         if self.check_position_is_sea(x_pos, y_pos, background_image):
             self.new_direction()
