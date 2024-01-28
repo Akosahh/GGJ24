@@ -1,6 +1,6 @@
 import pygame
 from entities import Player
-from npccity import City
+from city import CityFactory
 
 class Game:
 
@@ -14,9 +14,12 @@ class Game:
         self.background = pygame.image.load(background_asset).convert()
 
         self.player = Player(self.screen, "./assets/images/laughing.png", 30, 100)
-        self.city = City(self.background)
-        self.city.create_population(radius_range=90, population=20)
-        self.city.create_population(radius_range=140, population=30)
+        self.city_factory = CityFactory(
+            surface=self.background,
+            locations=[(1800, 1200), (1771, 685)],
+            scale=90,
+            image="./assets/images/city_image_1.png"
+        )
 
         self.background_x_offset = 0
         self.background_y_offset = 0
@@ -29,8 +32,8 @@ class Game:
         self.check_player_movement()
 
         self.player.collision_with_npc_check(
-            npc_position_list=self.city.x_y_list,
-            npc_size=self.city.people_size,
+            npc_position_list=self.city_factory.city_list[0].npc_list.get_positions(),
+            npc_scale=self.city_factory.city_list[0].npc_list.scale,
             player_pos=[self.background_x_offset, self.background_y_offset]
         )
 
@@ -46,10 +49,7 @@ class Game:
 
     def render_entities(self):
         self.player.render()
-        self.city.render()
-
-
-
+        self.city_factory.render()
 
     def render_ui(self):
         position_info = self.font.render(f"Scroll: [{self.background_x_offset}, {self.background_y_offset}]", True, (255, 0, 0))
